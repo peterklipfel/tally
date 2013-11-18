@@ -20,6 +20,11 @@ require 'spec_helper'
 
 describe ExpensesController do
 
+  before(:each) do
+    @user = FactoryGirl.create(:user)
+    sign_in @user
+  end
+
   # This should return the minimal set of attributes required to create a valid
   # Expense. As you add validations to Expense, be sure to
   # adjust the attributes here as well.
@@ -33,7 +38,7 @@ describe ExpensesController do
   describe "GET index" do
     it "assigns all expenses as @expenses" do
       expense = Expense.create! valid_attributes
-      get :index, {}, valid_session
+      get :index, {}
       assigns(:expenses).should eq([expense])
     end
   end
@@ -41,14 +46,14 @@ describe ExpensesController do
   describe "GET show" do
     it "assigns the requested expense as @expense" do
       expense = Expense.create! valid_attributes
-      get :show, {:id => expense.to_param}, valid_session
+      get :show, {:id => expense.to_param}
       assigns(:expense).should eq(expense)
     end
   end
 
   describe "GET new" do
     it "assigns a new expense as @expense" do
-      get :new, {}, valid_session
+      get :new, {}
       assigns(:expense).should be_a_new(Expense)
     end
   end
@@ -56,7 +61,7 @@ describe ExpensesController do
   describe "GET edit" do
     it "assigns the requested expense as @expense" do
       expense = Expense.create! valid_attributes
-      get :edit, {:id => expense.to_param}, valid_session
+      get :edit, {:id => expense.to_param}
       assigns(:expense).should eq(expense)
     end
   end
@@ -65,18 +70,18 @@ describe ExpensesController do
     describe "with valid params" do
       it "creates a new Expense" do
         expect {
-          post :create, {:expense => valid_attributes}, valid_session
+          post :create, {:expense => valid_attributes}
         }.to change(Expense, :count).by(1)
       end
 
       it "assigns a newly created expense as @expense" do
-        post :create, {:expense => valid_attributes}, valid_session
+        post :create, {:expense => valid_attributes}
         assigns(:expense).should be_a(Expense)
         assigns(:expense).should be_persisted
       end
 
       it "redirects to the created expense" do
-        post :create, {:expense => valid_attributes}, valid_session
+        post :create, {:expense => valid_attributes}
         response.should redirect_to(Expense.last)
       end
     end
@@ -85,14 +90,14 @@ describe ExpensesController do
       it "assigns a newly created but unsaved expense as @expense" do
         # Trigger the behavior that occurs when invalid params are submitted
         Expense.any_instance.stub(:save).and_return(false)
-        post :create, {:expense => {  }}, valid_session
+        post :create, {:expense => {  }}
         assigns(:expense).should be_a_new(Expense)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Expense.any_instance.stub(:save).and_return(false)
-        post :create, {:expense => {  }}, valid_session
+        post :create, {:expense => {  }}
         response.should render_template("new")
       end
     end
@@ -107,18 +112,18 @@ describe ExpensesController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Expense.any_instance.should_receive(:update).with({ "these" => "params" })
-        put :update, {:id => expense.to_param, :expense => { "these" => "params" }}, valid_session
+        put :update, {:id => expense.to_param, :expense => { "these" => "params" }}
       end
 
       it "assigns the requested expense as @expense" do
         expense = Expense.create! valid_attributes
-        put :update, {:id => expense.to_param, :expense => valid_attributes}, valid_session
+        put :update, {:id => expense.to_param, :expense => valid_attributes}
         assigns(:expense).should eq(expense)
       end
 
       it "redirects to the expense" do
         expense = Expense.create! valid_attributes
-        put :update, {:id => expense.to_param, :expense => valid_attributes}, valid_session
+        put :update, {:id => expense.to_param, :expense => valid_attributes}
         response.should redirect_to(expense)
       end
     end
@@ -128,7 +133,7 @@ describe ExpensesController do
         expense = Expense.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Expense.any_instance.stub(:save).and_return(false)
-        put :update, {:id => expense.to_param, :expense => {  }}, valid_session
+        put :update, {:id => expense.to_param, :expense => {  }}
         assigns(:expense).should eq(expense)
       end
 
@@ -136,7 +141,7 @@ describe ExpensesController do
         expense = Expense.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Expense.any_instance.stub(:save).and_return(false)
-        put :update, {:id => expense.to_param, :expense => {  }}, valid_session
+        put :update, {:id => expense.to_param, :expense => {  }}
         response.should render_template("edit")
       end
     end
@@ -146,13 +151,13 @@ describe ExpensesController do
     it "destroys the requested expense" do
       expense = Expense.create! valid_attributes
       expect {
-        delete :destroy, {:id => expense.to_param}, valid_session
+        delete :destroy, {:id => expense.to_param}
       }.to change(Expense, :count).by(-1)
     end
 
     it "redirects to the expenses list" do
       expense = Expense.create! valid_attributes
-      delete :destroy, {:id => expense.to_param}, valid_session
+      delete :destroy, {:id => expense.to_param}
       response.should redirect_to(expenses_url)
     end
   end
