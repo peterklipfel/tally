@@ -42,5 +42,5 @@ group :test, :development do
 end
 
 group :test do
-  gem "cucumber-rails", "~> 1.4.0"
+  gem "cucumber-rails", "~> 1.4.0", :require => false
 end
