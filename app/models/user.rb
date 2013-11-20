@@ -1,3 +1,4 @@
+#== Using devise check the devise documentation at http://github.com/platformantec/devise
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
