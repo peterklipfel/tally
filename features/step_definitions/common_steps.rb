@@ -13,6 +13,10 @@ When(/^I click "([^"]*)"$/) do |clickable|
   click_on clickable
 end
 
+When (/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
+  fill_in(field, :with => value)
+end
+
 Then(/^I am on the "([^"]*)" page$/) do |page|
   assert URI.parse(current_url).path == path_to(page)
 end

@@ -15,7 +15,8 @@ Scenario: User can access the sign up page
 Scenario: User can sign up
   Given I visit the "sign up" page
   And there is not a user account with email "user@example.com"
-  When I fill in "email" with "user@example.com"
-  And I fill in "password" with "password!"
-  And I fill in "password confirmation" with "password!"
+  When I fill in "Email" with "user@example.com"
+  And I fill in "Password" with "password!"
+  And I fill in "Password confirmation" with "password!"
+  And I click "Sign up"
   Then there is a user account with email "user@example.com"
