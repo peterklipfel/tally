@@ -4,6 +4,7 @@ module NavigationHelper
     when /home/ then root_path
     when /sign in/ then new_user_session_path
     when /sign up/ then new_user_registration_path
+    when /new invoice/ then new_invoice_path
     else
       begin
         page_name =~ /^the (.*) page$/
