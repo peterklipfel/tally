@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131118030431) do
+ActiveRecord::Schema.define(version: 20131127193009) do
 
   create_table "clients", force: true do |t|
     t.datetime "created_at"
@@ -26,7 +26,13 @@ ActiveRecord::Schema.define(version: 20131118030431) do
   create_table "invoices", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "title"
+    t.integer  "client_id"
+    t.integer  "user_id"
   end
+
+  add_index "invoices", ["client_id"], name: "index_invoices_on_client_id"
+  add_index "invoices", ["user_id"], name: "index_invoices_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

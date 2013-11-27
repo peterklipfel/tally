@@ -1,10 +1,12 @@
 module NavigationHelper
-  def path_to(page_name)
+  def path_to(page_name, id=nil)
     case page_name.downcase
     when /home/ then root_path
     when /sign in/ then new_user_session_path
     when /sign up/ then new_user_registration_path
     when /new invoice/ then new_invoice_path
+    when /show invoice/ then invoice_path(id)
+      
     else
       begin
         page_name =~ /^the (.*) page$/

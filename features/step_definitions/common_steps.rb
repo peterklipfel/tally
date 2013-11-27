@@ -25,7 +25,6 @@ When(/^I click "([^"]*)"$/) do |clickable|
 end
 
 When (/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
-  puts page.body.inspect
   fill_in(field, :with => value)
 end
 
