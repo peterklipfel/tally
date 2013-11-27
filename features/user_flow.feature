@@ -20,3 +20,13 @@ Scenario: User can sign up
   And I fill in "Password confirmation" with "password!"
   And I click "Sign up"
   Then there is a user account with email "user@example.com"
+
+Scenario: User can sign in
+  Given the following accounts exist:
+  | email               | password          |
+  | user@example.com    | password!         |
+  And I visit the "sign in" page
+  When I fill in "Email" with "user@example.com"
+  And I fill in "Password" with "password!"
+  And I click "Sign up"
+  Then there is a user account with email "user@example.com"
