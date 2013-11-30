@@ -32,3 +32,6 @@ Then(/^I am on the "([^"]*)" page$/) do |page|
   assert URI.parse(current_url).path == path_to(page)
 end
 
+Then (/^the page should contain "([^"]*)"$/) do |content|
+  assert(page.body.include? content)
+end

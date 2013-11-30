@@ -6,7 +6,7 @@ module NavigationHelper
     when /sign up/ then new_user_registration_path
     when /new invoice/ then new_invoice_path
     when /show invoice/ then invoice_path(id)
-      
+    when /edit invoice/ then edit_invoice_path(id)
     else
       begin
         page_name =~ /^the (.*) page$/
