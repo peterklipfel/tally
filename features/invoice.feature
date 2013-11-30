@@ -26,3 +26,9 @@ Scenario: User can see all of his invoices
   When I click "Invoices"
   Then the page should contain "Camel Humps"
   And the page should contain "Walrus Massage"
+
+Scenario: User can access the new invoice page
+  Given I am signed in
+  And I visit the "invoices" page
+  When I click "New Invoice"
+  Then I am on the "new invoice" page
