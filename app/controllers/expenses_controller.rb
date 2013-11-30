@@ -25,6 +25,7 @@ class ExpensesController < ApplicationController
   # POST /expenses
   # POST /expenses.json
   def create
+    puts expense_params.inspect
     @expense = Expense.new(expense_params)
 
     respond_to do |format|
@@ -70,6 +71,6 @@ class ExpensesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def expense_params
-      params[:expense]
+      params[:expense].permit(:task, :rate, :time)
     end
 end
