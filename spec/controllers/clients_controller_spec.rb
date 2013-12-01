@@ -111,8 +111,8 @@ describe ClientsController do
         # specifies that the Client created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Client.any_instance.should_receive(:update).with({ "these" => "params" })
-        put :update, {:id => client.to_param, :client => { "these" => "params" }}
+        Client.any_instance.should_receive(:update).with({ "name" => "Spring" })
+        put :update, {:id => client.to_param, :client => { "name" => "Spring" }}
       end
 
       it "assigns the requested client as @client" do

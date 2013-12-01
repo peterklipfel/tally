@@ -112,8 +112,8 @@ describe InvoicesController do
         # specifies that the Invoice created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Invoice.any_instance.should_receive(:update).with({ "these" => "params" })
-        put :update, {:id => invoice.to_param, :invoice => { "these" => "params" }}
+        Invoice.any_instance.should_receive(:update).with({ "title" => "Alphabet Ordering" })
+        put :update, {:id => invoice.to_param, :invoice => { "title" => "Alphabet Ordering" }}
       end
 
       it "assigns the requested invoice as @invoice" do

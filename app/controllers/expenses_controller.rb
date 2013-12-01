@@ -25,7 +25,6 @@ class ExpensesController < ApplicationController
   # POST /expenses
   # POST /expenses.json
   def create
-    puts expense_params.inspect
     @expense = Expense.new(expense_params)
 
     respond_to do |format|

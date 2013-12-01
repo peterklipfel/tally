@@ -111,8 +111,8 @@ describe ExpensesController do
         # specifies that the Expense created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Expense.any_instance.should_receive(:update).with({ "these" => "params" })
-        put :update, {:id => expense.to_param, :expense => { "these" => "params" }}
+        Expense.any_instance.should_receive(:update).with({ "task" => "gathering llamas" })
+        put :update, {:id => expense.to_param, :expense => {"task" => "gathering llamas" }}
       end
 
       it "assigns the requested expense as @expense" do
