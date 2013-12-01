@@ -23,7 +23,7 @@ describe PaymentsController do
   # This should return the minimal set of attributes required to create a valid
   # Payment. As you add validations to Payment, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { { "expense" => "" } }
+  let(:valid_attributes) { { "expense" => nil } }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -106,8 +106,8 @@ describe PaymentsController do
         # specifies that the Payment created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Payment.any_instance.should_receive(:update).with({ "expense" => "" })
-        put :update, {:id => payment.to_param, :payment => { "expense" => "" }}, valid_session
+        Payment.any_instance.should_receive(:update).with({ "amount" => "100.00" })
+        put :update, {:id => payment.to_param, :payment => { "amount" => "100.00" }}, valid_session
       end
 
       it "assigns the requested payment as @payment" do
