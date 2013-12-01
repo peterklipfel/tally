@@ -28,3 +28,8 @@ Scenario: User can modify a client
   And I click "Save"
   Then a client with name "UP" exists
 
+Scenario: User can navigate to the new client page
+  Given I am signed in
+  And I visit the "clients" page
+  When I click "New Client"
+  Then I am on the "new client" page
