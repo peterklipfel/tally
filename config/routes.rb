@@ -1,4 +1,6 @@
 Tally::Application.routes.draw do
+  resources :payments
+
   resources :clients
 
   resources :expenses
