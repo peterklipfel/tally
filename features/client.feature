@@ -11,6 +11,13 @@ Scenario: User can access see all clients
   Then the page should contain "OCaml"
   And the page should contain "Grandfather Ent"
 
+Scenario: User can create
+  Given I am signed in
+  And I visit the "new client" page
+  When I fill in "Name" with "Carl"
+  And I click "Save"
+  Then a client with name "Carl" exists
+
 Scenario: User can modify a client
   Given I am signed in
   And the following clients exist:

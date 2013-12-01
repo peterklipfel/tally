@@ -11,6 +11,7 @@ module NavigationHelper
     when /new expense/ then new_expense_path
     when /edit expense/ then edit_expense_path(id)
     when /edit client/ then edit_client_path(id)
+    when /new client/ then new_client_path
     else
       begin
         page_name =~ /^the (.*) page$/
