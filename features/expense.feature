@@ -20,4 +20,14 @@ Scenario: User can create an expense
   And I fill in "Time" with "5"
   And I fill in "Rate" with "50"
   And I click "Save"
-  Then an expense with task "finding bear" is created
+  Then an expense with task "finding bear" exists
+
+Scenario: User can modify an expense
+  Given I am signed in
+  And the following expenses exist:
+  | task          | rate    | time      |
+  | catching bear | 50      | 5         |
+  And I visit the "edit expense" page for the expense with task "catching bear"
+  When I fill in "Rate" with "100"
+  And I click "Save"
+  Then an expense with task "catching bear" and rate "100" exists

@@ -9,6 +9,7 @@ module NavigationHelper
     when /edit invoice/ then edit_invoice_path(id)
     when /invoices/ then invoices_path
     when /new expense/ then new_expense_path
+    when /edit expense/ then edit_expense_path(id)
     else
       begin
         page_name =~ /^the (.*) page$/
