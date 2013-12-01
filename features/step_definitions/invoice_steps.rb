@@ -16,6 +16,6 @@ end
 
 Given(/^the following invoices exist:$/) do |table|
   table.hashes.each do |attrs|
-    Invoice.create!(attrs.merge({title: attrs[:title]}))
+    Invoice.create!(attrs)
   end
 end
