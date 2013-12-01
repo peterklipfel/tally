@@ -24,6 +24,10 @@ When(/^I click "([^"]*)"$/) do |clickable|
   click_on clickable
 end
 
+When(/^I click "([^"]*)" within "([^"]*)"$/) do |clickable, wrap|
+  click_on clickable
+end
+
 When (/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in(field, :with => value)
 end
@@ -32,6 +36,10 @@ Then(/^I am on the "([^"]*)" page$/) do |page|
   assert URI.parse(current_url).path == path_to(page)
 end
 
-Then (/^the page should contain "([^"]*)"$/) do |content|
-  assert(page.body.include? content)
+Then (/^the page should( not)? contain "([^"]*)"$/) do |not_contain, content|
+  if not_contain.nil?
+    assert(page.body.include? content)
+  else
+    assert(!(page.body.include?(content)))
+  end
 end

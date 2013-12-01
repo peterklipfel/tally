@@ -19,3 +19,5 @@ Given(/^the following invoices exist:$/) do |table|
     Invoice.create!(attrs)
   end
 end
+
+

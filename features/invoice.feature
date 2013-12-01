@@ -32,3 +32,14 @@ Scenario: User can access the new invoice page
   And I visit the "invoices" page
   When I click "New Invoice"
   Then I am on the "new invoice" page
+
+Scenario: User can remove an invoice
+  Given I am signed in
+  And the following invoices exist:
+  | title    |
+  | C2C Gig  |
+  # note that there are no payments on this invoice
+  And I visit the "invoices" page
+  When I click "Destroy" within "asdf"
+  Then I am on the "invoices" page
+  And the page should not contain "C2C Gig"
