@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :payment do
-    expense ""
+    expense nil
     amount "9.99"
   end
 end

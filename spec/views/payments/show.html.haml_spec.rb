@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "payments/show" do
   before(:each) do
     @payment = assign(:payment, stub_model(Payment,
-      :expense => "",
+      :expense => nil,
       :amount => "9.99"
     ))
   end
