@@ -25,6 +25,7 @@ When(/^I click "([^"]*)"$/) do |clickable|
 end
 
 When(/^I click "([^"]*)" within "([^"]*)"$/) do |clickable, wrap|
+  puts page.body
   click_on clickable
 end
 

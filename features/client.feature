@@ -33,3 +33,13 @@ Scenario: User can navigate to the new client page
   And I visit the "clients" page
   When I click "New Client"
   Then I am on the "new client" page
+
+Scenario: User can delete clients
+  Given I am signed in
+  And the following clients exist:
+  | name   |
+  | Bill   |
+  And I visit the "clients" page
+  When I click "Destroy"
+  Then I am on the "clients" page
+  And the page should not contain "Bill" 
