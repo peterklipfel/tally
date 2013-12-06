@@ -39,9 +39,13 @@ describe ClientsController do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all clients as @clients" do
+    it "assigns all of my clients as @clients" do
       get :index, {}
       assigns(:clients).should eq([my_client])
+    end
+    it "does not show other peoples' clients" do
+      get :index, {}
+      assigns(:clients).should_not include(your_client)
     end
   end
 
