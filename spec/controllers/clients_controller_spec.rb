@@ -23,7 +23,10 @@ describe ClientsController do
   before(:each) do
     @user = FactoryGirl.create(:user)
     sign_in @user
+    @user2 = FactoryGirl.create(:user)
   end
+  let(:your_client) { FactoryGirl.create(:client, user: @user2) }
+  let(:my_client) { FactoryGirl.create(:client, user: @user) }
 
   # This should return the minimal set of attributes required to create a valid
   # Client. As you add validations to Client, be sure to
@@ -37,9 +40,8 @@ describe ClientsController do
 
   describe "GET index" do
     it "assigns all clients as @clients" do
-      client = Client.create! valid_attributes
       get :index, {}
-      assigns(:clients).should eq([client])
+      assigns(:clients).should eq([my_client])
     end
   end
 
