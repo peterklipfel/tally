@@ -4,4 +4,6 @@ class Client < ActiveRecord::Base
   has_many :invoices
 
   validates_presence_of :user
+
+  scope :all_for_user, -> (user_id) { where(user_id: user_id) }
 end
