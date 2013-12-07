@@ -54,6 +54,3 @@ end
 expenses1.zip(expenses2).flatten.each do |e|
   Payment.create(amount: rand(1.00..e.time*e.rate))
 end
-# expenses2.each do |e|
-#   Payment.create([{amount: rand(1.00..e.time*e.rate)}])
-# end
