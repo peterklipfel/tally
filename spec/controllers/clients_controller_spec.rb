@@ -116,61 +116,72 @@ describe ClientsController do
   end
 
   describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested client" do
-        client = Client.create! valid_attributes
-        # Assuming there are no other clients in the database, this
-        # specifies that the Client created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Client.any_instance.should_receive(:update).with({ "name" => "Spring" })
-        put :update, {:id => client.to_param, :client => { "name" => "Spring" }}
-      end
+    describe "when it is associated with me" do
+      describe "with valid parameters" do
+        it "updates the requested client" do
+          Client.any_instance.should_receive(:update).with({ "name" => "Spring" })
+          put :update, {:id => my_client.to_param, :client => { "name" => "Spring" }}
+        end
 
-      it "assigns the requested client as @client" do
-        client = Client.create! valid_attributes
-        put :update, {:id => client.to_param, :client => valid_attributes}
-        assigns(:client).should eq(client)
-      end
+        it "assigns the requested client as @client" do
+          put :update, {:id => my_client.to_param, :client => { "name" => "Spring" }}
+          assigns(:client).should eq(my_client)
+        end
 
-      it "redirects to the client" do
-        client = Client.create! valid_attributes
-        put :update, {:id => client.to_param, :client => valid_attributes}
-        response.should redirect_to(client)
+        it "redirects to the client" do
+          put :update, {:id => my_client.to_param, :client => { "name" => "Spring" }}
+          response.should redirect_to(my_client)
+        end
+      end
+      
+      describe "with invalid params" do
+        it "assigns the client as @client" do
+          Client.any_instance.stub(:save).and_return(false)
+          put :update, {:id => my_client.to_param, :client => {  }}
+          assigns(:client).should eq(my_client)
+        end
+
+        it "re-renders the 'edit' template" do
+          Client.any_instance.stub(:save).and_return(false)
+          put :update, {:id => my_client.to_param, :client => {  }}
+          response.should render_template("edit")
+        end
       end
     end
 
-    describe "with invalid params" do
-      it "assigns the client as @client" do
-        client = Client.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Client.any_instance.stub(:save).and_return(false)
-        put :update, {:id => client.to_param, :client => {  }}
-        assigns(:client).should eq(client)
-      end
-
-      it "re-renders the 'edit' template" do
-        client = Client.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Client.any_instance.stub(:save).and_return(false)
-        put :update, {:id => client.to_param, :client => {  }}
-        response.should render_template("edit")
+    describe "that is not associated with me" do
+      it "reredirects to the index page" do
+        put :update, {:id => your_client.to_param, :client => {  }}
+        response.should redirect_to(clients_path)
       end
     end
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested client" do
-      client = Client.create! valid_attributes
-      expect {
-        delete :destroy, {:id => client.to_param}
-      }.to change(Client, :count).by(-1)
-    end
+    describe "when it is associated with me" do
+      it "destroys the requested client" do
+        client = Client.create! user_id: @user.to_param
+        expect {
+          delete :destroy, {:id => client.to_param}
+        }.to change(Client, :count).by(-1)
+      end
 
-    it "redirects to the clients list" do
-      client = Client.create! valid_attributes
-      delete :destroy, {:id => client.to_param}
-      response.should redirect_to(clients_url)
+      it "redirects to the clients list" do
+        delete :destroy, {:id => my_client.to_param}
+        response.should redirect_to(clients_url)
+      end
+    end
+    describe "when it is not associated with me" do
+      it "does not destroy the requested client" do
+        client = Client.create! user_id: @user2.to_param
+        expect {
+          delete :destroy, {:id => client.to_param}
+        }.to change(Client, :count).by(0)
+      end
+      it "redirects to the clients index path" do
+        delete :destroy, {:id => your_client.to_param}
+        response.should redirect_to(clients_url)
+      end
     end
   end
 
