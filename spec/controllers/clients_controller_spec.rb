@@ -54,7 +54,7 @@ describe ClientsController do
       get :show, {:id => my_client.to_param}
       assigns(:client).should eq(my_client)
     end
-    it "does something if I'm not allowed to see the client" do
+    it "redirects to index if I'm not allowed to see the client" do
       get :show, {id: your_client.to_param}
       response.should redirect_to(clients_path)
     end
