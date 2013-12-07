@@ -1,5 +1,7 @@
 require 'spec_helper'
 
 describe Invoice do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should respond_to :expenses }
+  it { should respond_to :client }
+  it { should_not respond_to :user}
 end
