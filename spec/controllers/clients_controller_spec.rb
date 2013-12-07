@@ -69,9 +69,12 @@ describe ClientsController do
 
   describe "GET edit" do
     it "assigns the requested client as @client" do
-      client = Client.create! valid_attributes
-      get :edit, {:id => client.to_param}
-      assigns(:client).should eq(client)
+      get :edit, {:id => my_client.to_param}
+      assigns(:client).should eq(my_client)
+    end
+    it "redirects if I'm not allowed to edit the client" do
+      get :edit, {:id => your_client.to_param}
+      response.should redirect_to(clients_path)
     end
   end
 
