@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131207010418) do
+ActiveRecord::Schema.define(version: 20131207013732) do
 
   create_table "clients", force: true do |t|
     t.datetime "created_at"
@@ -28,7 +28,10 @@ ActiveRecord::Schema.define(version: 20131207010418) do
     t.string   "task"
     t.decimal  "time"
     t.decimal  "rate"
+    t.integer  "invoice_id"
   end
+
+  add_index "expenses", ["invoice_id"], name: "index_expenses_on_invoice_id"
 
   create_table "invoices", force: true do |t|
     t.datetime "created_at"
