@@ -65,7 +65,12 @@ class InvoicesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_invoice
-      @invoice = Invoice.find(params[:id])
+      begin
+        @invoice = Invoice.all_for_user(current_user).find(params[:id])
+      rescue ActiveRecord::RecordNotFound => e
+        flash[:notice] = "Could not find requested invoice"
+        redirect_to invoices_path
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

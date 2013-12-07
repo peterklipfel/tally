@@ -52,9 +52,12 @@ describe InvoicesController do
 
   describe "GET show" do
     it "assigns the requested invoice as @invoice" do
-      invoice = Invoice.create! valid_attributes
-      get :show, {:id => invoice.to_param}
-      assigns(:invoice).should eq(invoice)
+      get :show, {:id => my_invoice.to_param}
+      assigns(:invoice).should eq(my_invoice)
+    end
+    it "redirects to index if I'm not allowed to see the client" do
+      get :show, {id: your_invoice.to_param}
+      response.should redirect_to(invoices_path)
     end
   end
 
