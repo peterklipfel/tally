@@ -24,7 +24,10 @@ describe InvoicesController do
   before(:each) do
     @user = FactoryGirl.create(:user)
     sign_in @user
+    @user2 = FactoryGirl.create(:user)
   end
+  let(:your_invoice) { FactoryGirl.create(:invoice, user: @user2) }
+  let(:my_invoice) { FactoryGirl.create(:invoice, user: @user) }
 
   # This should return the minimal set of attributes required to create a valid
   # Invoice. As you add validations to Invoice, be sure to
@@ -37,10 +40,13 @@ describe InvoicesController do
   let(:valid_session) { {} }
 
   describe "GET index" do
-    it "assigns all invoices as @invoices" do
-      invoice = Invoice.create! valid_attributes
+    it "assigns all of my invoices as @invoices" do
       get :index, {}
-      assigns(:invoices).should eq([invoice])
+      assigns(:invoices).should eq([my_invoice])
+    end
+    it "does not show invoices that are not mine" do
+      get :index, {}
+      assigns(:invoices).should_not include(your_invoice)
     end
   end
 
