@@ -1,5 +1,7 @@
 require 'spec_helper'
 
 describe Client do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "fails validation with no user" do
+    expect(Client.new).to have(1).error_on(:user)
+  end
 end

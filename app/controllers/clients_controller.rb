@@ -25,7 +25,7 @@ class ClientsController < ApplicationController
   # POST /clients
   # POST /clients.json
   def create
-    @client = Client.new(client_params)
+    @client = Client.new(client_params.merge({user_id: current_user.to_param}))
 
     respond_to do |format|
       if @client.save
