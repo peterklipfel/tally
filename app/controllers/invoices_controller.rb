@@ -26,9 +26,9 @@ class InvoicesController < ApplicationController
   # POST /invoices.json
   def create
     @invoice = Invoice.new(invoice_params)
-
     respond_to do |format|
-      if ((can_access_client invoice_params) && @invoice.save)
+      # TODO: Make this less ugly
+      if ((can_access_client invoice_params, @invoice) && @invoice.save)
         format.html { redirect_to @invoice, notice: 'Invoice was successfully created.' }
         format.json { render action: 'show', status: :created, location: @invoice }
       else
@@ -65,9 +65,11 @@ class InvoicesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_invoice
-      begin
-        @invoice = Invoice.all_for_user(current_user).find(params[:id])
-      rescue ActiveRecord::RecordNotFound => e
+      # I'm not getting the invoice directly from here because ActiveRecord
+      # makes joined models read only
+      user_invoices = Invoice.all_for_user(current_user).pluck(:id)
+      @invoice = Invoice.find(params[:id])
+      unless user_invoices.include? @invoice.id
         flash[:notice] = "Could not find requested invoice"
         redirect_to invoices_path
       end
@@ -78,7 +80,9 @@ class InvoicesController < ApplicationController
       params[:invoice].permit(:title, :client_id)
     end
 
-    def can_access_client invoice_params
-      current_user.clients.pluck(:id).include? invoice_params["client_id"].to_i
+    # TODO: Refactor into respective models
+    def can_access_client invoice_params, invoice
+      (current_user.clients.pluck(:id).include?(invoice_params["client_id"].to_i) ||
+      current_user.clients.pluck(:id).include?(invoice.client.try(:id)))
     end
 end

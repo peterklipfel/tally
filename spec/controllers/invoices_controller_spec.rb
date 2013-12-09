@@ -119,61 +119,72 @@ describe InvoicesController do
   end
 
   describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested invoice" do
-        invoice = Invoice.create! valid_attributes
-        # Assuming there are no other invoices in the database, this
-        # specifies that the Invoice created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Invoice.any_instance.should_receive(:update).with({ "title" => "Alphabet Ordering" })
-        put :update, {:id => invoice.to_param, :invoice => { "title" => "Alphabet Ordering" }}
+    describe "when it is associated with me" do
+      describe "with valid params" do
+        it "updates the requested invoice" do
+          Invoice.any_instance.should_receive(:update).with({ "title" => "Alphabet Ordering" })
+          put :update, {:id => my_invoice.to_param, :invoice => { "title" => "Alphabet Ordering" }}
+        end
+
+        it "assigns the requested invoice as @invoice" do
+          put :update, {:id => my_invoice.to_param, :invoice => valid_attributes}
+          assigns(:invoice).should eq(my_invoice)
+        end
+
+        it "redirects to the invoice" do
+          put :update, {:id => my_invoice.to_param, :invoice => valid_attributes}
+          response.should redirect_to(my_invoice)
+        end
       end
 
-      it "assigns the requested invoice as @invoice" do
-        invoice = Invoice.create! valid_attributes
-        put :update, {:id => invoice.to_param, :invoice => valid_attributes}
-        assigns(:invoice).should eq(invoice)
-      end
+      describe "with invalid params" do
+        it "assigns the invoice as @invoice" do
+          Invoice.any_instance.stub(:save).and_return(false)
+          put :update, {:id => my_invoice.to_param, :invoice => {  }}
+          assigns(:invoice).should eq(my_invoice)
+        end
 
-      it "redirects to the invoice" do
-        invoice = Invoice.create! valid_attributes
-        put :update, {:id => invoice.to_param, :invoice => valid_attributes}
-        response.should redirect_to(invoice)
+        it "re-renders the 'edit' template" do
+          Invoice.any_instance.stub(:save).and_return(false)
+          put :update, {:id => my_invoice.to_param, :invoice => {  }}
+          response.should render_template("edit")
+        end
       end
     end
-
-    describe "with invalid params" do
-      it "assigns the invoice as @invoice" do
-        invoice = Invoice.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Invoice.any_instance.stub(:save).and_return(false)
-        put :update, {:id => invoice.to_param, :invoice => {  }}
-        assigns(:invoice).should eq(invoice)
-      end
-
-      it "re-renders the 'edit' template" do
-        invoice = Invoice.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Invoice.any_instance.stub(:save).and_return(false)
-        put :update, {:id => invoice.to_param, :invoice => {  }}
-        response.should render_template("edit")
+    describe "that is not associated with me" do
+      it "reredirects to the index page" do
+        put :update, {:id => your_invoice.to_param, :invoice => {  }}
+        response.should redirect_to(invoices_path)
       end
     end
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested invoice" do
-      invoice = Invoice.create! valid_attributes
-      expect {
+    describe "when it is associated with me" do
+      it "destroys the requested invoice" do
+        invoice = Invoice.create! client_id: my_invoice.client.id
+        expect {
+          delete :destroy, {:id => invoice.to_param}
+        }.to change(Invoice, :count).by(-1)
+      end
+      it "redirects to the invoices list" do
+        invoice = Invoice.create! client_id: my_invoice.client.id
         delete :destroy, {:id => invoice.to_param}
-      }.to change(Invoice, :count).by(-1)
+        response.should redirect_to(invoices_url)
+      end
     end
 
-    it "redirects to the invoices list" do
-      invoice = Invoice.create! valid_attributes
-      delete :destroy, {:id => invoice.to_param}
-      response.should redirect_to(invoices_url)
+    describe "when it is not associated with me" do
+      it "does not destroy the requested invoice" do
+        invoice = Invoice.create! client_id: your_invoice.client.id
+        expect {
+          delete :destroy, {:id => invoice.to_param}
+        }.to change(Invoice, :count).by(0)
+      end
+      it "redirects to the invoices index path" do
+        delete :destroy, {:id => your_invoice.to_param}
+        response.should redirect_to(invoices_url)
+      end
     end
   end
 
