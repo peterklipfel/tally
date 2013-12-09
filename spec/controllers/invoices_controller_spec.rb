@@ -70,28 +70,28 @@ describe InvoicesController do
 
   describe "GET edit" do
     it "assigns the requested invoice as @invoice" do
-      invoice = Invoice.create! valid_attributes
-      get :edit, {:id => invoice.to_param}
-      assigns(:invoice).should eq(invoice)
+      get :edit, {:id => my_invoice.to_param}
+      assigns(:invoice).should eq(my_invoice)
     end
   end
 
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Invoice" do
+        client = my_invoice.client
         expect {
-          post :create, {:invoice => valid_attributes}
+          post :create, {:invoice => {client_id: client.to_param, title: "Attending Concerts"}}
         }.to change(Invoice, :count).by(1)
       end
 
       it "assigns a newly created invoice as @invoice" do
-        post :create, {:invoice => valid_attributes}
+        post :create, {:invoice => {client_id: my_invoice.client.to_param, title: "Attending Concerts"}}
         assigns(:invoice).should be_a(Invoice)
         assigns(:invoice).should be_persisted
       end
 
       it "redirects to the created invoice" do
-        post :create, {:invoice => valid_attributes}
+        post :create, {:invoice => {client_id: my_invoice.client.to_param, title: "Attending Concerts"}}
         response.should redirect_to(Invoice.last)
       end
     end
@@ -110,6 +110,11 @@ describe InvoicesController do
         post :create, {:invoice => {  }}
         response.should render_template("new")
       end
+    end
+
+    it "does not save an invoice for a client that is not associated with me" do
+      post :create, {:invoice => {client_id: your_invoice.client, title: "Attending Concerts"}}
+      assigns(:invoice).should_not be_persisted
     end
   end
 

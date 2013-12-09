@@ -28,7 +28,7 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.new(invoice_params)
 
     respond_to do |format|
-      if @invoice.save
+      if ((can_access_client invoice_params) && @invoice.save)
         format.html { redirect_to @invoice, notice: 'Invoice was successfully created.' }
         format.json { render action: 'show', status: :created, location: @invoice }
       else
@@ -75,6 +75,10 @@ class InvoicesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def invoice_params
-      params[:invoice].permit(:title)
+      params[:invoice].permit(:title, :client_id)
+    end
+
+    def can_access_client invoice_params
+      current_user.clients.pluck(:id).include? invoice_params["client_id"].to_i
     end
 end
