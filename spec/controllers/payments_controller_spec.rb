@@ -40,10 +40,14 @@ describe PaymentsController do
 
   describe "GET index" do
     it "assigns all payments as @payments" do
+      my_payment #loads it
+      your_payment #loads it
       get :index, {}
       assigns(:payments).should eq([my_payment])
     end
     it "does not show payments that are not mine" do
+      my_payment #loads it
+      your_payment #loads it
       get :index, {}
       assigns(:payments).should_not include(your_payment)
     end
