@@ -30,6 +30,7 @@ When(/^I click "([^"]*)" within "([^"]*)"$/) do |clickable, wrap|
 end
 
 When (/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
+  puts page.body
   fill_in(field, :with => value)
 end
 

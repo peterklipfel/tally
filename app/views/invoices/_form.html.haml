@@ -9,5 +9,8 @@
   = f.label :title
   = f.text_field :title
 
+  = f.label :client
+  = f.select :client?, @clients
+
   .actions
     = f.submit 'Save'

@@ -16,6 +16,7 @@ class InvoicesController < ApplicationController
   # GET /invoices/new
   def new
     @invoice = Invoice.new
+    @clients = Client.all_for_user(current_user).map { |c| [c.name, c.id] }
   end
 
   # GET /invoices/1/edit
