@@ -107,7 +107,7 @@ describe PaymentsController do
       it "assigns a newly created but unsaved payment as @payment" do
         # Trigger the behavior that occurs when invalid params are submitted
         Payment.any_instance.stub(:save).and_return(false)
-        post :create, {:payment => {  }}
+        post :create, {:payment => { "expense" => "invalid value" }}
         assigns(:payment).should be_a_new(Payment)
       end
 
@@ -130,12 +130,12 @@ describe PaymentsController do
 
         it "assigns the requested payment as @payment" do
           put :update, {:id => my_payment.to_param, :payment => valid_attributes}
-          assigns(:payment).should eq(payment)
+          assigns(:payment).should eq(my_payment)
         end
 
         it "redirects to the payment" do
           put :update, {:id => my_payment.to_param, :payment => valid_attributes}
-          response.should redirect_to(payment)
+          response.should redirect_to(my_payment)
         end
       end
 
@@ -143,7 +143,7 @@ describe PaymentsController do
         it "assigns the payment as @payment" do
           Payment.any_instance.stub(:save).and_return(false)
           put :update, {:id => my_payment.to_param, :payment => { "expense" => "invalid value" }}
-          assigns(:payment).should eq(payment)
+          assigns(:payment).should eq(my_payment)
         end
 
         it "re-renders the 'edit' template" do
@@ -178,10 +178,10 @@ describe PaymentsController do
     end
     describe "when it is not associated with me" do
       it "does not destroy the requested payment" do
-        payment = Invoice.create! expense_id: your_payment.expense.to_param
+        payment = Payment.create! expense_id: your_payment.expense.to_param, amount: 100
         expect {
           delete :destroy, {:id => payment.to_param}
-        }.to change(Invoice, :count).by(0)
+        }.to change(Payment, :count).by(0)
       end
       it "redirects to the payments index path" do
         delete :destroy, {:id => your_payment.to_param}

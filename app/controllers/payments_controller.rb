@@ -27,7 +27,7 @@ class PaymentsController < ApplicationController
     @payment = Payment.new(payment_params)
 
     respond_to do |format|
-      if @payment.save
+      if ((can_access_expense payment_params, @payment) && @payment.save)
         format.html { redirect_to @payment, notice: 'Payment was successfully created.' }
         format.json { render action: 'show', status: :created, location: @payment }
       else
@@ -64,11 +64,23 @@ class PaymentsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_payment
+      # I'm not getting the payment directly from here because ActiveRecord
+      # makes joined models read only
+      user_payments = Payment.all_for_user(current_user).collect { |p| p.id }
       @payment = Payment.find(params[:id])
+      unless user_payments.include? @payment.id
+        flash[:notice] = "Could not find requested payment"
+        redirect_to payments_path
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def payment_params
       params.require(:payment).permit(:expense_id, :amount)
+    end
+
+    def can_access_expense payment_params, payment
+      (Expense.pluck(:id).include?(payment_params["expense_id"].to_i) ||
+      Expense.pluck(:id).include?(payment.expense.try(:id)))
     end
 end
