@@ -154,7 +154,7 @@ describe ExpensesController do
         end
       end
     end
-     describe "when it is not owned by me" do
+    describe "when it is not owned by me" do
       it "reredirects to the index page" do
         put :update, {:id => your_expense.to_param, :invoice => {  }}
         response.should redirect_to(expenses_path)
