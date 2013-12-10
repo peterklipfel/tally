@@ -55,16 +55,16 @@ describe ExpensesController do
       get :show, {:id => my_expense.to_param}
       assigns(:expense).should eq(my_expense)
     end
+    it "redirects to index if I'm not allowed to see the expense" do
+      get :show, {id: your_expense.to_param}
+      response.should redirect_to(expenses_path)
+    end
   end
 
   describe "GET new" do
     it "assigns a new expense as @expense" do
       get :new, {}
       assigns(:expense).should be_a_new(Expense)
-    end
-    it "redirects to index if I'm not allowed to see the expense" do
-      get :show, {id: your_expense.to_param}
-      response.should redirect_to(expenses_path)
     end
   end
 

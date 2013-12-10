@@ -65,7 +65,14 @@ class ExpensesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_expense
+      # I'm not getting the expense directly from here because ActiveRecord
+      # makes joined models read only
+      user_expenses = Expense.all_for_user(current_user).pluck(:id)
       @expense = Expense.find(params[:id])
+      unless user_expenses.include? @expense.id
+        flash[:notice] = "Could not find requested expense"
+        redirect_to expenses_path
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
