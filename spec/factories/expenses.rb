@@ -2,5 +2,7 @@
 
 FactoryGirl.define do
   factory :expense do
+    ignore { user nil }
+    invoice { FactoryGirl.create :invoice, user: user}
   end
 end
