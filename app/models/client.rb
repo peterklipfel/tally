@@ -5,5 +5,5 @@ class Client < ActiveRecord::Base
 
   validates_presence_of :user
 
-  scope :all_for_user1, -> (user_id) { where(user_id: user_id) }
+  scope :all_for_user, -> (user_id) { where(user_id: user_id) }
 end

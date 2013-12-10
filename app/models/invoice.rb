@@ -5,5 +5,5 @@ class Invoice < ActiveRecord::Base
 
   validates_presence_of :client
 
-  scope :all_for_user, -> (user_id) { Invoice.joins(:client).load.merge Client.all_for_user1(user_id) }
+  scope :all_for_user, -> (user_id) { Invoice.joins(:client).load.merge Client.all_for_user(user_id) }
 end
