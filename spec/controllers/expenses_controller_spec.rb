@@ -40,7 +40,6 @@ describe ExpensesController do
 
   describe "GET index" do
     it "assigns all of my expenses as @expenses" do
-      expense = Expense.create! valid_attributes
       get :index, {}
       assigns(:expenses).should eq([my_expense])
     end
@@ -173,7 +172,7 @@ describe ExpensesController do
       end
 
       it "redirects to the expenses list" do
-        expense = Expense.create! valid_attributes
+        expense = Expense.create! invoice_id: my_expense.invoice.to_param
         delete :destroy, {:id => expense.to_param}
         response.should redirect_to(expenses_url)
       end
