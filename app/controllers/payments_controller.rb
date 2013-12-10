@@ -4,7 +4,6 @@ class PaymentsController < ApplicationController
   # GET /payments
   # GET /payments.json
   def index
-    puts Expense.all_for_user(current_user).inspect
     @payments = Payment.all_for_user(current_user)
   end
 
