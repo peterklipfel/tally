@@ -1,6 +1,6 @@
 Given(/^the following clients exist:$/) do |table|
   table.hashes.each do |attrs|
-    Client.create!(attrs)
+    FactoryGirl.create(:client, name: attrs["name"], user: User.first)
   end
 end
 

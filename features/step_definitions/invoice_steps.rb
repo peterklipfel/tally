@@ -3,7 +3,7 @@ Given(/^I visit the "(.*?)" page for the invoice titled "(.*?)"$/) do |page, tit
 end
 
 Given(/^I create an invoice titled "(.*?)"$/) do |title|
-  Invoice.create!(title: title)
+  FactoryGirl.create(:invoice, title: title, user: User.first)
 end
 
 Then(/^I am on the "(.*?)" page for the invoice titled "(.*?)"$/) do |page, title|
@@ -16,7 +16,7 @@ end
 
 Given(/^the following invoices exist:$/) do |table|
   table.hashes.each do |attrs|
-    Invoice.create!(attrs)
+    FactoryGirl.create(:invoice, title: attrs["title"], user: User.first)
   end
 end
 

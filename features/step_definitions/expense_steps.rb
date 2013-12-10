@@ -1,6 +1,8 @@
 Given(/^the following expenses exist:$/) do |table|
   table.hashes.each do |attrs|
-    Expense.create!(attrs)
+    # this requires that the user that is signed in is the first user created
+    # super brittle...
+    FactoryGirl.create(:expense, task: attrs["title"], rate: attrs["rate"], time: attrs["time"], user: User.first)
   end
 end
 
