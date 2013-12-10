@@ -180,10 +180,10 @@ describe ExpensesController do
     end
     describe "when it is not associated with me" do
       it "does not destroy the requested expense" do
-        expense = Invoice.create! invoice_id: your_expense.invoice.id
+        expense = Expense.create! invoice_id: your_expense.invoice.id
         expect {
           delete :destroy, {:id => expense.to_param}
-        }.to change(Invoice, :count).by(0)
+        }.to change(Expense, :count).by(0)
       end
       it "redirects to the expenses index path" do
         delete :destroy, {:id => your_expense.to_param}

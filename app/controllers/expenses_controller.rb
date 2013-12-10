@@ -28,7 +28,7 @@ class ExpensesController < ApplicationController
     @expense = Expense.new(expense_params)
 
     respond_to do |format|
-      if @expense.save
+      if ((can_access_invoice expense_params, @expense) && @expense.save)
         format.html { redirect_to @expense, notice: 'Expense was successfully created.' }
         format.json { render action: 'show', status: :created, location: @expense }
       else
@@ -77,6 +77,12 @@ class ExpensesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def expense_params
-      params[:expense].permit(:task, :rate, :time)
+      params[:expense].permit(:task, :rate, :time, :invoice_id)
+    end
+
+    # TODO: Refactor into respective models
+    def can_access_invoice expense_params, expense
+      (Invoice.all_for_user(current_user).pluck(:id).include?(expense_params["invoice_id"].to_i) ||
+      Invoice.all_for_user(current_user).pluck(:id).include?(expense.invoice.try(:id)))
     end
 end
