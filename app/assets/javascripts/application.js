@@ -13,4 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require manhattan
+//= require manhattan.grid
+//= require manhattan.form
 //= require_tree .
