@@ -40,6 +40,6 @@ Scenario: User can delete clients
   | name   |
   | Bill   |
   And I visit the "clients" page
-  When I click "Destroy"
+  When I click "destroy"
   Then I am on the "clients" page
   And the page should not contain "Bill" 
