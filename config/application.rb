@@ -25,5 +25,8 @@ module Tally
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     I18n.config.enforce_available_locales = true
+
+    # Use SAAS as the preferred syntax in stylesheets
+    config.sass.preferred_syntax = :sass
   end
 end
