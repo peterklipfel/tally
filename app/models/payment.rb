@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: payments
+#
+#  id         :integer          not null, primary key
+#  expense_id :integer
+#  amount     :decimal(, )
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Payment < ActiveRecord::Base
   belongs_to :expense
 
