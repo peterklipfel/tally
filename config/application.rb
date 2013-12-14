@@ -28,5 +28,10 @@ module Tally
 
     # Use SAAS as the preferred syntax in stylesheets
     config.sass.preferred_syntax = :sass
+
+    # Global symbol names for icons
+    EDIT = "&#x2699;"
+    DESTROY = "&#xE0D0;"
+    SHOW = "&#x1F440;"
   end
 end
