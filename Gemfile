@@ -27,6 +27,16 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
+# Use Manhattan SASS framework
+# gem 'manhattan', path: "~/Projects/manhattan/"
+gem 'manhattan', git: "https://github.com/devontivona/manhattan.git"
+
+# Use Simple Form for form generation
+gem 'simple_form'
+
+# Use Stripe to process payments
+gem 'stripe', git: 'https://github.com/stripe/stripe-ruby'
+
 gem "devise", "~> 3.2.1"
 gem "haml-rails", "~> 0.4"
 
