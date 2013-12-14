@@ -6,7 +6,7 @@ describe "Invoices" do
     it "allows the user to view the index" do
       sign_up_user
       visit invoices_path
-      page.body.should include("Listing invoices")
+      page.body.should include("Invoices")
     end
   end
 end
