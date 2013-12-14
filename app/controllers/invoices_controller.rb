@@ -1,6 +1,7 @@
 class InvoicesController < ApplicationController
+  layout "invoice", only: :preview
   before_action :set_invoice, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: :preview
 
   # GET /invoices
   # GET /invoices.json
@@ -11,6 +12,10 @@ class InvoicesController < ApplicationController
   # GET /invoices/1
   # GET /invoices/1.json
   def show
+  end
+
+  def preview
+    @invoice = Invoice.find params[:id]
   end
 
   # GET /invoices/new
