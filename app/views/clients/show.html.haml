@@ -1,6 +1,20 @@
-%p#notice= notice
-
-
-= link_to 'Edit', edit_client_path(@client)
-\|
-= link_to 'Back', clients_path
+%h2= @client.name
+%h3 Invoices
+%table
+  %tr
+    %th Title
+    %th Total
+    %th Actions
+  - if @client.invoices.count > 0
+    - @client.invoices.each do |invoice|
+      %tr
+        %td= invoice.title
+        %td= number_to_currency invoice.total
+        %td.actions
+          = link_to Tally::Application::SHOW.html_safe, invoice, class: "ss-icon"
+          = link_to Tally::Application::EDIT.html_safe, edit_invoice_path(invoice), class: "ss-icon"
+          = link_to Tally::Application::DESTROY.html_safe, invoice, method: :delete, data: { confirm: 'Are you sure?' }, class: "ss-icon"
+  - else
+    %tr
+      %td{ colspan: 10 } This client does not have any invoices
+= link_to "Edit #{@client.name}", edit_client_path(@client), class: :button
