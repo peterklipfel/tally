@@ -40,7 +40,7 @@ Scenario: User can remove an invoice
   | C2C Gig  |
   # note that there are no payments on this invoice
   And I visit the "invoices" page
-  When I click "Destroy"
+  When I click "destroy"
   # There's only one invoice, so we don't need to worry about a within
   Then I am on the "invoices" page
   And the page should not contain "C2C Gig"
