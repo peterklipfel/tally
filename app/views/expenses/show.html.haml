@@ -1,6 +1,12 @@
-%p#notice= notice
-
-
-= link_to 'Edit', edit_expense_path(@expense)
-\|
-= link_to 'Back', expenses_path
+%h2= @expense.task
+%table
+  %tr
+    %th Time
+    %th Rate
+    %th Total
+  %tr
+    %td= "#{ @expense.time } hours"
+    %td= number_to_currency(@expense.rate)
+    %td= number_to_currency(@expense.total)
+= link_to "Back to Invoice", @expense.invoice, class: "button"
+= link_to "Edit Expense", edit_invoice_expense_path(@expense.invoice, @expense), class: "button"
