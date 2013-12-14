@@ -6,8 +6,8 @@ Scenario: User can access create expense page
   | title                |
   | Bear Hugs 11/30/2013 |
   And I visit the "show invoice" page for the invoice titled "Bear Hugs 11/30/2013"
-  When I click "create expense"
-  Then I am on the "new expense" page
+  When I click "Add Line Item"
+  Then I am on the "new expense" page for the invoice titled "Bear Hugs 11/30/2013"
 
 Scenario: User can create an expense
   Given I am signed in
@@ -15,7 +15,7 @@ Scenario: User can create an expense
   | title                |
   | Bear Hugs 10/30/2013 |
   And I visit the "show invoice" page for the invoice titled "Bear Hugs 10/30/2013"
-  And I click "create expense"
+  And I click "Add Line Item"
   When I fill in "Task" with "finding bear"
   And I fill in "Time" with "5"
   And I fill in "Rate" with "50"
