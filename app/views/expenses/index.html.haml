@@ -8,9 +8,9 @@
 
   - @expenses.each do |expense|
     %tr
-      %td= link_to 'Show', expense
-      %td= link_to 'Edit', edit_expense_path(expense)
-      %td= link_to 'Destroy', expense, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= link_to content_tag(:i, Tally::Application::SHOW.html_safe, class: "ss-icon"), expense
+      %td= link_to content_tag(:i, Tally::Application::EDIT.html_safe, class: "ss-icon"), edit_expense_path(expense)
+      %td= link_to content_tag(:i, Tally::Application::DESTROY.html_safe, class: "ss-icon"), expense, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 

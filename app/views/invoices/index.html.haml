@@ -1,19 +1,21 @@
-%h1 Listing invoices
-
+%h2 Invoices
 %table
   %tr
     %th Title
-    %th
-    %th
-    %th
-
-  - @invoices.each do |invoice|
+    %th Client
+    %th Total
+    %th Actions
+  - if @invoices.count > 0
+    - @invoices.each do |invoice|
+      %tr
+        %td= invoice.title
+        %td= invoice.client.name
+        %td= number_to_currency invoice.total
+        %td.actions
+          = link_to Tally::Application::SHOW.html_safe, invoice, class: "ss-icon"
+          = link_to Tally::Application::EDIT.html_safe, edit_invoice_path(invoice), class: "ss-icon"
+          = link_to Tally::Application::DESTROY.html_safe, invoice, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "ss-icon", id: "destroy"
+  - else
     %tr
-      %td= invoice.title
-      %td= link_to 'Show', invoice
-      %td= link_to 'Edit', edit_invoice_path(invoice)
-      %td= link_to 'Destroy', invoice, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Invoice', new_invoice_path
+      %td{ colspan: 10 } You currently do not have any invoices
+= link_to 'New Invoice', new_invoice_path, class: :button

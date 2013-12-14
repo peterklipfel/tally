@@ -1,21 +1,14 @@
-%h1 Listing payments
-
+%h2 Payments
 %table
   %tr
-    %th Expense
-    %th Amount
-    %th
-    %th
-    %th
-
-  - @payments.each do |payment|
+    %th{ colspan: 10 } Title
+  - if @payments.count > 0
+    - @payments.each do |payment|
+      %tr
+        %td= payment.name
+        %td= link_to content_tag(:i, Tally::Application::SHOW.html_safe, class: "ss-icon"), payment
+        %td= link_to content_tag(:i, Tally::Application::EDIT.html_safe, class: "ss-icon"), edit_payment_path(payment)
+        %td= link_to content_tag(:i, Tally::Application::DESTROY.html_safe, class: "ss-icon"), payment, :method => :delete, :data => { :confirm => 'Are you sure?' }
+  - else
     %tr
-      %td= payment.expense
-      %td= payment.amount
-      %td= link_to 'Show', payment
-      %td= link_to 'Edit', edit_payment_path(payment)
-      %td= link_to 'Destroy', payment, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Payment', new_payment_path
+      %td{ colspan: 10 } You currently do not have any payments
