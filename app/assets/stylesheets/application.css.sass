@@ -1,0 +1,95 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+ */
+
+$font-family: "proxima-nova", "Helvetica Neue", "Helvetica", "Arial", sans-serif
+$highlight-color: rgba(46, 204, 113, 1.0)
+
+@import "manhattan"
+@import "ss-standard"
+
+.header
+  background: $highlight-color
+  margin-bottom: $rhythm * 3
+  img
+    display: inline-block
+    width: $rhythm * 12
+    vertical-align: top
+    margin-left: -8px
+  h1
+    color: white
+    display: inline-block
+    margin-bottom: 0
+  .navigation
+    float: right
+    .button
+      color: $highlight-color
+      background: white
+      margin-top: $rhythm * 3
+      padding: $rhythm * 1.5 $rhythm * 2
+      margin-left: $rhythm * 1
+
+h1
+  font-family: "proxima-nova-extra-condensed", sans-serif
+  font-weight: 600
+  text-transform: uppercase
+
+body.invoice
+  background: $highlight-color
+  .container
+    background: white
+    margin: $rhythm * 6 auto
+  h1
+    text-align: center
+
+.hero
+  margin-bottom: $rhythm * 6
+
+.invoice-details
+  margin-bottom: $rhythm * 4
+
+.button
+  font-weight: 600
+
+table
+  td.actions .ss-icon
+    color: black
+    margin-left: $rhythm * 2
+
+h1
+  @include baseline-adjust(1px)
+
+p
+  @include baseline-adjust(2px)
+
+body, html
+  position: relative
+  height: 100%
+
+.container
+  background: transparent
+
+table
+  img
+    background: white
+    width: $rhythm * 4
+    height: $rhythm * 4
+    border-radius: $rhythm * 2
+    margin:
+      top: 0
+      left: -$rhythm
+      right: $rhythm * 2
+      bottom: 0
+    border: 1px solid $highlight-color
+    padding: 0
+    float: left
