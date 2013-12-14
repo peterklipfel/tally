@@ -13,8 +13,9 @@
 class Invoice < ActiveRecord::Base
   has_many :expenses
   belongs_to :client
-
   validates_presence_of :client
-
   scope :all_for_user, -> (user_id) { Invoice.joins(:client).load.merge Client.all_for_user(user_id) }
+  def total
+    expenses.map(&:total).inject(0.0) { |a, b| a + b }
+  end
 end
