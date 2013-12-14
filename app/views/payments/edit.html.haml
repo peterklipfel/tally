@@ -2,6 +2,6 @@
 
 = render 'form'
 
-= link_to 'Show', @payment
+= link_to content_tag(:i, Tally::Application::SHOW.html_safe, class: "ss-icon"), @payment
 \|
 = link_to 'Back', payments_path
