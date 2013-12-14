@@ -16,20 +16,24 @@ class ExpensesController < ApplicationController
   # GET /expenses/new
   def new
     @expense = Expense.new
+    @invoice = Invoice.find params[:invoice_id]
   end
 
   # GET /expenses/1/edit
   def edit
+    @expense = Expense.find params[:id]
+    @invoice = Invoice.find params[:invoice_id]
   end
 
   # POST /expenses
   # POST /expenses.json
   def create
     @expense = Expense.new(expense_params)
-
+    @invoice = Invoice.find params[:invoice_id]
+    @expense.invoice = @invoice
     respond_to do |format|
       if ((can_access_invoice expense_params, @expense) && @expense.save)
-        format.html { redirect_to @expense, notice: 'Expense was successfully created.' }
+        format.html { redirect_to @expense.invoice, notice: 'Line item was successfully created.' }
         format.json { render action: 'show', status: :created, location: @expense }
       else
         format.html { render action: 'new' }
@@ -43,7 +47,7 @@ class ExpensesController < ApplicationController
   def update
     respond_to do |format|
       if @expense.update(expense_params)
-        format.html { redirect_to @expense, notice: 'Expense was successfully updated.' }
+        format.html { redirect_to invoice_expense_path(@expense.invoice, @expense), notice: 'Expense was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
