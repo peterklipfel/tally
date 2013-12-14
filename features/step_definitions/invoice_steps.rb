@@ -19,5 +19,3 @@ Given(/^the following invoices exist:$/) do |table|
     FactoryGirl.create(:invoice, title: attrs["title"], user: User.first)
   end
 end
-
-
