@@ -59,3 +59,4 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+Rails.application.config.secret_key_base = 'not_so_secure'
