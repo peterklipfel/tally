@@ -2,6 +2,9 @@ Feature: Allow user to manipulate his or her invoices
 
 Scenario: User can create a new invoice
   Given I am signed in
+  And the following clients exist:
+  | name |
+  | Jim  |
   And I visit the "new invoice" page
   When I fill in "Title" with "Llama Kisses 11/27/2013"
   And I click "Save"
