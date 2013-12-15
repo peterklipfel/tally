@@ -61,7 +61,7 @@ class ExpensesController < ApplicationController
   def destroy
     @expense.destroy
     respond_to do |format|
-      format.html { redirect_to expenses_url }
+      format.html { redirect_to invoice_expenses_url(@expense.invoice.to_param) }
       format.json { head :no_content }
     end
   end
@@ -75,7 +75,7 @@ class ExpensesController < ApplicationController
       @expense = Expense.find(params[:id])
       unless user_expenses.include? @expense.id
         flash[:notice] = "Could not find requested expense"
-        redirect_to expenses_path
+        redirect_to invoice_expenses_path(params[:invoice_id])
       end
     end
 

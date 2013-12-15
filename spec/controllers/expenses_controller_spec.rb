@@ -40,41 +40,41 @@ describe ExpensesController do
 
   describe "GET index" do
     it "assigns all of my expenses as @expenses" do
-      get :index, {}
+      get :index, {invoice_id: my_expense.invoice.to_param}
       assigns(:expenses).should eq([my_expense])
     end
     it "does not show expenses that are not mine" do
-      get :index, {}
+      get :index, {invoice_id: my_expense.invoice.to_param}
       assigns(:expenses).should_not include(your_expense)
     end
   end
 
   describe "GET show" do
     it "assigns the requested expense as @expense" do
-      get :show, {:id => my_expense.to_param}
+      get :show, {:id => my_expense.to_param, invoice_id: my_expense.invoice.to_param}
       assigns(:expense).should eq(my_expense)
     end
     it "redirects to index if I'm not allowed to see the expense" do
-      get :show, {id: your_expense.to_param}
-      response.should redirect_to(expenses_path)
+      get :show, {id: your_expense.to_param, invoice_id: your_expense.invoice.to_param}
+      response.should redirect_to(invoice_expenses_path(your_expense.invoice))
     end
   end
 
   describe "GET new" do
     it "assigns a new expense as @expense" do
-      get :new, {}
+      get :new, {invoice_id: my_expense.invoice.to_param}
       assigns(:expense).should be_a_new(Expense)
     end
   end
 
   describe "GET edit" do
     it "assigns the requested expense as @expense" do
-      get :edit, {:id => my_expense.to_param}
+      get :edit, {:id => my_expense.to_param, invoice_id: my_expense.invoice.to_param}
       assigns(:expense).should eq(my_expense)
     end
     it "redirects to index if I'm not allowed to see the invoice" do
-      get :edit, {:id => your_expense.to_param}
-      response.should redirect_to(expenses_path)
+      get :edit, {:id => your_expense.to_param, invoice_id: your_expense.invoice.to_param}
+      response.should redirect_to(invoice_expenses_path(your_expense.invoice))
     end
   end
 
@@ -83,19 +83,19 @@ describe ExpensesController do
       it "creates a new Expense" do
         my_invoice = my_expense.invoice
         expect {
-          post :create, {:expense => {invoice_id: my_invoice.to_param, rate: 100, time: 4, task: "Dancing"}}
+          post :create, {invoice_id: my_invoice.to_param, :expense => {rate: 100, time: 4, task: "Dancing"}}
         }.to change(Expense, :count).by(1)
       end
 
       it "assigns a newly created expense as @expense" do
-        post :create, {:expense => {invoice_id: my_expense.invoice.to_param, rate: 100, time: 4, task: "Dancing"}}
+        post :create, {invoice_id: my_expense.invoice.to_param, :expense => {rate: 100, time: 4, task: "Dancing"}}
         assigns(:expense).should be_a(Expense)
         assigns(:expense).should be_persisted
       end
 
       it "redirects to the created expense" do
-        post :create, {:expense => {invoice_id: my_expense.invoice.to_param, rate: 100, time: 4, task: "Dancing"}}
-        response.should redirect_to(Expense.last)
+        post :create, {invoice_id: my_expense.invoice.to_param, :expense => {rate: 100, time: 4, task: "Dancing"}}
+        response.should redirect_to(invoice_path(Expense.last.invoice))
       end
     end
 
@@ -103,20 +103,20 @@ describe ExpensesController do
       it "assigns a newly created but unsaved expense as @expense" do
         # Trigger the behavior that occurs when invalid params are submitted
         Expense.any_instance.stub(:save).and_return(false)
-        post :create, {:expense => {  }}
+        post :create, {invoice_id: my_expense.invoice.to_param, :expense => {  }}
         assigns(:expense).should be_a_new(Expense)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Expense.any_instance.stub(:save).and_return(false)
-        post :create, {:expense => {  }}
+        post :create, {invoice_id: my_expense.invoice.to_param, :expense => {  }}
         response.should render_template("new")
       end
     end
 
     it "does not save an expense for an invoice that is not associated with me" do
-      post :create, {:expense => {invoice_id: your_expense.invoice.to_param, title: "Attending Concerts"}}
+      post :create, {invoice_id: your_expense.invoice.to_param, :expense => {title: "Attending Concerts"}}
       assigns(:expense).should_not be_persisted
     end
   end
@@ -126,38 +126,38 @@ describe ExpensesController do
       describe "with valid params" do
         it "updates the requested expense" do
           Expense.any_instance.should_receive(:update).with({ "task" => "gathering llamas" })
-          put :update, {:id => my_expense.to_param, :expense => {"task" => "gathering llamas" }}
+          put :update, {:id => my_expense.to_param, invoice_id: my_expense.invoice.to_param, :expense => {"task" => "gathering llamas"}}
         end
 
         it "assigns the requested expense as @expense" do
-          put :update, {:id => my_expense.to_param, :expense => valid_attributes}
+          put :update, {:id => my_expense.to_param, invoice_id: my_expense.invoice.to_param, :expense => valid_attributes}
           assigns(:expense).should eq(my_expense)
         end
 
         it "redirects to the expense" do
-          put :update, {:id => my_expense.to_param, :expense => valid_attributes}
-          response.should redirect_to(my_expense)
+          put :update, {:id => my_expense.to_param, invoice_id: my_expense.invoice.to_param, :expense => valid_attributes}
+          response.should redirect_to(invoice_expense_path(my_expense.invoice, my_expense))
         end
       end
 
       describe "with invalid params" do
         it "assigns the expense as @expense" do
           Expense.any_instance.stub(:save).and_return(false)
-          put :update, {:id => my_expense.to_param, :expense => {  }}
+          put :update, {:id => my_expense.to_param, invoice_id: my_expense.invoice.to_param, :expense => {  }}
           assigns(:expense).should eq(my_expense)
         end
 
         it "re-renders the 'edit' template" do
           Expense.any_instance.stub(:save).and_return(false)
-          put :update, {:id => my_expense.to_param, :expense => {  }}
+          put :update, {:id => my_expense.to_param, invoice_id: my_expense.invoice.to_param, :expense => {  }}
           response.should render_template("edit")
         end
       end
     end
     describe "when it is not owned by me" do
       it "reredirects to the index page" do
-        put :update, {:id => your_expense.to_param, :invoice => {  }}
-        response.should redirect_to(expenses_path)
+        put :update, {:id => your_expense.to_param, invoice_id: my_expense.invoice.to_param, :expense => {  }}
+        response.should redirect_to(invoice_expenses_path(my_expense.invoice))
       end
     end
   end
@@ -167,26 +167,26 @@ describe ExpensesController do
       it "destroys the requested expense" do
         expense = Expense.create! invoice_id: my_expense.invoice.to_param
         expect {
-          delete :destroy, {:id => expense.to_param}
+          delete :destroy, {:id => expense.to_param, invoice_id: expense.invoice.to_param}
         }.to change(Expense, :count).by(-1)
       end
 
       it "redirects to the expenses list" do
-        expense = Expense.create! invoice_id: my_expense.invoice.to_param
-        delete :destroy, {:id => expense.to_param}
-        response.should redirect_to(expenses_url)
+        expense = Expense.create! invoice_id: my_expense.invoice.to_param, invoice_id: my_expense.invoice.to_param
+        delete :destroy, {:id => expense.to_param, invoice_id: expense.invoice.to_param}
+        response.should redirect_to(invoice_expenses_url(expense.invoice.to_param))
       end
     end
     describe "when it is not associated with me" do
       it "does not destroy the requested expense" do
-        expense = Expense.create! invoice_id: your_expense.invoice.id
+        expense = Expense.create! invoice_id: your_expense.invoice.id, invoice_id: your_expense.invoice.to_param
         expect {
-          delete :destroy, {:id => expense.to_param}
+          delete :destroy, {:id => expense.to_param, invoice_id: expense.invoice.to_param}
         }.to change(Expense, :count).by(0)
       end
       it "redirects to the expenses index path" do
-        delete :destroy, {:id => your_expense.to_param}
-        response.should redirect_to(expenses_url)
+        delete :destroy, {:id => your_expense.to_param, invoice_id: your_expense.invoice.to_param}
+        response.should redirect_to(invoice_expenses_url(your_expense.invoice.to_param))
       end
     end
   end
