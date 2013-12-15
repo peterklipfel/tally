@@ -3,8 +3,8 @@ require 'spec_helper'
 describe "expenses/index" do
   before(:each) do
     assign(:expenses, [
-      stub_model(Expense),
-      stub_model(Expense)
+      FactoryGirl.create(:expense, user: FactoryGirl.create(:user)),
+      FactoryGirl.create(:expense, user: FactoryGirl.create(:user))
     ])
   end
 
