@@ -27,6 +27,7 @@
   - else
     %tr
       %td{ colspan: 10 } This invoice does not have any line items
-= link_to "Preview", preview_invoice_path(@invoice), class: :button
+.preview{ "data-no-turbolink" => true }
+  = link_to "Preview", preview_invoice_path(@invoice), class: :button
 = link_to "Add Line Item", new_invoice_expense_path(@invoice), class: :button
 = link_to "Edit #{ @invoice.title } Invoice", edit_invoice_path(@invoice), class: :button
