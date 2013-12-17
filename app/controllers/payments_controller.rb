@@ -25,13 +25,12 @@ class PaymentsController < ApplicationController
   # POST /payments.json
   def create
     @payment = Payment.new(payment_params)
-
     respond_to do |format|
-      if ((can_access_expense payment_params, @payment) && @payment.save)
-        format.html { redirect_to @payment, notice: 'Payment was successfully created.' }
+      if ((can_access_invoice payment_params, @payment) && @payment.save)
+        format.html { redirect_to preview_invoice_path(@payment.invoice), notice: 'Congratulations! Your payment was successfully processed.' }
         format.json { render action: 'show', status: :created, location: @payment }
       else
-        format.html { render action: 'new' }
+        format.html { redirect_to preview_invoice_path(@payment.invoice), notice: 'We were unable to process your payment. Please try again.' }
         format.json { render json: @payment.errors, status: :unprocessable_entity }
       end
     end
