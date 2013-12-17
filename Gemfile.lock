@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/devontivona/manhattan.git
-  revision: a6f03a276d7fecf6613a05709384f7865d0dec8c
-  specs:
-    manhattan (0.0.2)
-      bourbon (>= 2.1)
-      neat (>= 1.4)
-      sass (>= 3.2)
-
-GIT
   remote: https://github.com/stripe/stripe-ruby
   revision: f369ca16f956979d7e2a68242399417197f43168
   specs:
@@ -15,6 +6,14 @@ GIT
       mime-types (~> 1.25)
       multi_json (>= 1.0.4, < 2)
       rest-client (~> 1.4)
+
+PATH
+  remote: ~/Projects/manhattan/
+  specs:
+    manhattan (0.0.2)
+      bourbon (>= 2.1)
+      neat (>= 1.4)
+      sass (>= 3.2)
 
 GEM
   remote: https://rubygems.org/
