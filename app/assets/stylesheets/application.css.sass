@@ -45,12 +45,18 @@ h1
   text-transform: uppercase
 
 body.invoice
+
   background: $highlight-color
-  .container
-    background: white
-    margin: $rhythm * 6 auto
-  h1
-    text-align: center
+  .wrapper
+    overflow: hidden
+    .container
+      background: white
+      padding:
+        top: $rhythm * 6
+        bottom: $rhythm * 6
+      margin: $rhythm * 6 auto
+    h1, h2
+      text-align: center
 
 .hero
   margin-bottom: $rhythm * 6
