@@ -25,8 +25,8 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 
 # Use Manhattan SASS framework
-gem 'manhattan', path: "~/Projects/manhattan/"
-# gem 'manhattan', git: "https://github.com/devontivona/manhattan.git"
+# gem 'manhattan', path: "~/Projects/manhattan/"
+gem 'manhattan', git: "https://github.com/devontivona/manhattan.git"
 
 # Use Simple Form for form generation
 gem 'simple_form'
