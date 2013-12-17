@@ -4,6 +4,6 @@ module FeatureSpecHelpers
     fill_in "user_email", with: "yooser@example.com"
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
-    click_on "Sign up"
+    click_on "Sign Up"
   end
 end
