@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :payment do
     ignore { user nil }
-    expense { FactoryGirl.create(:expense, user: user) }
+    invoice { FactoryGirl.create(:invoice, user: user) }
     amount "9.99"
   end
 end

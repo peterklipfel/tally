@@ -76,11 +76,11 @@ class PaymentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def payment_params
-      params.require(:payment).permit(:expense_id, :amount)
+      params.require(:payment).permit(:invoice_id, :amount)
     end
 
-    def can_access_expense payment_params, payment
-      (Expense.pluck(:id).include?(payment_params["expense_id"].to_i) ||
-      Expense.pluck(:id).include?(payment.expense.try(:id)))
+    def can_access_invoice payment_params, payment
+      (Invoice.pluck(:id).include?(payment_params["invoice_id"].to_i) ||
+      Invoice.pluck(:id).include?(payment.invoice.try(:id)))
     end
 end

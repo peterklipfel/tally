@@ -31,7 +31,7 @@ describe PaymentsController do
   # This should return the minimal set of attributes required to create a valid
   # Payment. As you add validations to Payment, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { { "expense" => nil } }
+  let(:valid_attributes) { { "invoice" => nil } }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -85,21 +85,21 @@ describe PaymentsController do
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Payment" do
-        expense = my_payment.expense
+        invoice = my_payment.invoice
         expect {
-          post :create, {:payment => {expense_id: expense.to_param, amount: 1000}}
+          post :create, {:payment => {invoice_id: invoice.to_param, amount: 1000}}
         }.to change(Payment, :count).by(1)
       end
 
       it "assigns a newly created payment as @payment" do
-        post :create, {:payment => {expense_id: my_payment.expense.to_param, amount: 1000}}
+        post :create, {:payment => {invoice_id: my_payment.invoice.to_param, amount: 1000}}
         assigns(:payment).should be_a(Payment)
         assigns(:payment).should be_persisted
       end
 
-      it "redirects to the created payment" do
-        post :create, {:payment => {expense_id: my_payment.expense.to_param, amount: 1000}}
-        response.should redirect_to(Payment.last)
+      it "redirects to the preview page for the invoice of the created payment" do
+        post :create, {:payment => {invoice_id: my_payment.invoice.to_param, amount: 1000}}
+        response.should redirect_to(preview_invoice_path(Payment.last.invoice))
       end
     end
 
@@ -107,15 +107,13 @@ describe PaymentsController do
       it "assigns a newly created but unsaved payment as @payment" do
         # Trigger the behavior that occurs when invalid params are submitted
         Payment.any_instance.stub(:save).and_return(false)
-        post :create, {:payment => { "expense" => "invalid value" }}
+        post :create, {:payment => {invoice_id: my_payment.invoice.to_param}}
         assigns(:payment).should be_a_new(Payment)
       end
 
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Payment.any_instance.stub(:save).and_return(false)
-        post :create, {:payment => { "expense" => "invalid value" }}
-        response.should render_template("new")
+      it "redirects to the preview page for the invoice of the created payment" do
+        post :create, {:payment => {invoice_id: my_payment.invoice.to_param}}
+        response.should redirect_to(preview_invoice_path(Payment.last.invoice))
       end
     end
   end
@@ -142,13 +140,13 @@ describe PaymentsController do
       describe "with invalid params" do
         it "assigns the payment as @payment" do
           Payment.any_instance.stub(:save).and_return(false)
-          put :update, {:id => my_payment.to_param, :payment => { "expense" => "invalid value" }}
+          put :update, {:id => my_payment.to_param, :payment => { "invoice" => "invalid value" }}
           assigns(:payment).should eq(my_payment)
         end
 
         it "re-renders the 'edit' template" do
           Payment.any_instance.stub(:save).and_return(false)
-          put :update, {:id => my_payment.to_param, :payment => { "expense" => "invalid value" }}
+          put :update, {:id => my_payment.to_param, :payment => { "invoice" => "invalid value" }}
           response.should render_template("edit")
         end
       end
@@ -164,21 +162,21 @@ describe PaymentsController do
   describe "DELETE destroy" do
     describe "when it is associated with me" do
       it "destroys the requested payment" do
-        payment = Payment.create! expense_id: my_payment.expense.to_param, amount: 100
+        payment = Payment.create! invoice_id: my_payment.invoice.to_param, amount: 100
         expect {
           delete :destroy, {:id => payment.to_param}
         }.to change(Payment, :count).by(-1)
       end
 
       it "redirects to the payments list" do
-        payment = Payment.create! expense_id: my_payment.expense.to_param, amount: 100
+        payment = Payment.create! invoice_id: my_payment.invoice.to_param, amount: 100
         delete :destroy, {:id => payment.to_param}
         response.should redirect_to(payments_url)
       end
     end
     describe "when it is not associated with me" do
       it "does not destroy the requested payment" do
-        payment = Payment.create! expense_id: your_payment.expense.to_param, amount: 100
+        payment = Payment.create! invoice_id: your_payment.invoice.to_param, amount: 100
         expect {
           delete :destroy, {:id => payment.to_param}
         }.to change(Payment, :count).by(0)
