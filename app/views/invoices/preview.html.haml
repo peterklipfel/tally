@@ -1,5 +1,6 @@
 .grid-12
   %h1 Invoice
+  %h2= @invoice.title
   %table
     %tr
       %th Client
@@ -9,6 +10,16 @@
       %td= @invoice.client.name
       %td= @invoice.created_at.strftime("%d/%m/%Y")
       %td= number_to_currency @invoice.total
+  - unless @invoice.payment.blank?
+    %table
+      %tr
+        %th Payment Status
+        %th Date Paid
+        %th Amount
+      %tr
+        %td Paid
+        %td= @invoice.payment.created_at.strftime("%d/%m/%Y")
+        %td= number_to_currency @invoice.total
   %h3 Line Items
   %table
     %tr
@@ -28,23 +39,27 @@
         %td{ colspan: 10 } This invoice does not have any line items
   .invoice-details
     %p All balances due are payable upon reception of invoice. Interest on past due balances is 18% per annum or 1.5% per month. Thank you for your business. We look forward to our continued working relationship during this process.
+  = simple_form_for :payment, url: payments_path do |f|
+    = f.input :amount, as: :hidden, input_html: { value: @invoice.total }
+    = f.input :invoice_id, as: :hidden, input_html: { value: @invoice.id }
   - if signed_in?
     = link_to "Back to Invoice", invoice_path(@invoice), class: :button
-  / = form_tag payments_path do
-
-  = link_to "Pay Invoice", "#", class: :button, id: "pay-invoice-button"
-  %script{ src: "https://checkout.stripe.com/checkout.js" }
-  :coffeescript
-    handler = StripeCheckout.configure(
-      key: "#{Rails.configuration.stripe[:publishable_key]}"
-      image: "/assets/logo@2x.png"
-      token: (token, args) ->
-    )
-    document.getElementById("pay-invoice-button").addEventListener "click", (e) ->
-      handler.open
-        name: "Tally"
-        description: "2 widgets ($20.00)"
-        amount: 2000
-      e.preventDefault()
+  - if @invoice.payment.blank?
+    = link_to "Pay Invoice", "#", class: :button, id: "pay-invoice-button"
+    %script{ src: "https://checkout.stripe.com/checkout.js" }
+    :coffeescript
+      handler = StripeCheckout.configure(
+        key: "#{Rails.configuration.stripe[:publishable_key]}"
+        image: "/assets/logo@2x.png"
+        token: (token, args) ->
+          stripe_token_input = $('<input type=hidden name=stripe_token />').val(token)
+          $('form').append(stripe_token_input).submit()
+      )
+      document.getElementById("pay-invoice-button").addEventListener "click", (e) ->
+        handler.open
+          name: "Invoice"
+          description: "#{@invoice.title}"
+          amount: "#{@invoice.total * 100}"
+        e.preventDefault()
 
 
