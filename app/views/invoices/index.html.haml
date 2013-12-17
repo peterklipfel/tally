@@ -1,21 +1,22 @@
-%h2 Invoices
-%table
-  %tr
-    %th Title
-    %th Client
-    %th Total
-    %th Actions
-  - if @invoices.count > 0
-    - @invoices.each do |invoice|
-      %tr
-        %td= invoice.title
-        %td= invoice.client.name
-        %td= number_to_currency invoice.total
-        %td.actions
-          = link_to Tally::Application::SHOW.html_safe, invoice, class: "ss-icon"
-          = link_to Tally::Application::EDIT.html_safe, edit_invoice_path(invoice), class: "ss-icon"
-          = link_to Tally::Application::DESTROY.html_safe, invoice, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "ss-icon", id: "destroy"
-  - else
+.grid-12
+  %h2 Invoices
+  %table
     %tr
-      %td{ colspan: 10 } You currently do not have any invoices
-= link_to 'New Invoice', new_invoice_path, class: :button
+      %th Title
+      %th Total
+      %th Paid?
+      %th Actions
+    - if @invoices.count > 0
+      - @invoices.each do |invoice|
+        %tr
+          %td= invoice.title
+          %td= number_to_currency invoice.total
+          %td= invoice.payment.blank? ? "No" : "Yes"
+          %td.actions
+            = link_to Tally::Application::SHOW.html_safe, invoice, class: "ss-icon"
+            = link_to Tally::Application::EDIT.html_safe, edit_invoice_path(invoice), class: "ss-icon"
+            = link_to Tally::Application::DESTROY.html_safe, invoice, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "ss-icon", id: "destroy"
+    - else
+      %tr
+        %td{ colspan: 10 } You currently do not have any invoices
+  = link_to 'New Invoice', new_invoice_path, class: :button

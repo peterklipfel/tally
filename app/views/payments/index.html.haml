@@ -1,14 +1,16 @@
-%h2 Payments
-%table
-  %tr
-    %th{ colspan: 10 } Title
-  - if @payments.count > 0
-    - @payments.each do |payment|
-      %tr
-        %td= payment.amount
-        %td= link_to content_tag(:i, Tally::Application::SHOW.html_safe, class: "ss-icon"), payment
-        %td= link_to content_tag(:i, Tally::Application::EDIT.html_safe, class: "ss-icon"), edit_payment_path(payment)
-        %td= link_to content_tag(:i, Tally::Application::DESTROY.html_safe, class: "ss-icon"), payment, :method => :delete, :data => { :confirm => 'Are you sure?' }
-  - else
+.grid-12
+  %h2 Payments
+  %table
     %tr
-      %td{ colspan: 10 } You currently do not have any payments
+      %th Amount
+      %th Invoice
+      %th Client
+    - if @payments.count > 0
+      - @payments.each do |payment|
+        %tr
+          %td= number_to_currency payment.amount
+          %td= payment.invoice.title
+          %td= payment.invoice.client.name
+    - else
+      %tr
+        %td{ colspan: 10 } You currently do not have any payments

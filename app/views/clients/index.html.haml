@@ -1,19 +1,20 @@
-%h2 Clients
-%table
-  %tr
-    %th Title
-    %th Invoices
-    %th Actions
-  - if @clients.count > 0
-    - @clients.each do |client|
-      %tr
-        %td= client.name
-        %td= client.invoices.count
-        %td.actions
-          = link_to Tally::Application::SHOW.html_safe, client, class: "ss-icon"
-          = link_to Tally::Application::EDIT.html_safe, edit_client_path(client), class: "ss-icon"
-          = link_to Tally::Application::DESTROY.html_safe, client, method: :delete, data: { confirm: 'Are you sure?' }, class: "ss-icon", id: "destroy"
-  - else
+.grid-12
+  %h2 Clients
+  %table
     %tr
-      %td{ colspan: 10 } You currently do not have any clients
-= link_to 'New Client', new_client_path, class: :button
+      %th Title
+      %th Invoices
+      %th Actions
+    - if @clients.count > 0
+      - @clients.each do |client|
+        %tr
+          %td= client.name
+          %td= client.invoices.count
+          %td.actions
+            = link_to Tally::Application::SHOW.html_safe, client, class: "ss-icon"
+            = link_to Tally::Application::EDIT.html_safe, edit_client_path(client), class: "ss-icon"
+            = link_to Tally::Application::DESTROY.html_safe, client, method: :delete, data: { confirm: 'Are you sure?' }, class: "ss-icon", id: "destroy"
+    - else
+      %tr
+        %td{ colspan: 10 } You currently do not have any clients
+  = link_to 'New Client', new_client_path, class: :button
