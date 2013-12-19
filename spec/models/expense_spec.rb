@@ -14,5 +14,12 @@
 require 'spec_helper'
 
 describe Expense do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should respond_to :invoice }
+   it "fails validation with no invoice" do
+    expect(Expense.new).to have(1).error_on(:invoice)
+  end
+
+  it "calculates total properly" do
+    expect(Expense.new(time: 10, rate: 10).total).to eq(100)
+  end
 end
